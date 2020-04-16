@@ -1,0 +1,7 @@
+fasta,name
+test/test_genomes/GCA_000009765.2_ASM976v2_genomic.fasta.gz,GCA_000009765
+test/test_genomes/GCA_000166555.2_ASM16655v2_genomic.fasta.gz,GCA_000166555
+test/test_genomes/GCA_000167475.1_ASM16747v1_genomic.fasta,GCA_000167475
+test/test_genomes/GCA_000181555.2_ASM18155v2_genomic.fasta.gz,GCA_000181555
+test/test_genomes/GCA_000186345.1_ASM18634v1_genomic.fasta.gz,GCA_000186345
+test/test_genomes/GCA_000710235.1_ASM71023v1_genomic.fasta.gz,GCA_000710235

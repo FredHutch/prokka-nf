@@ -1,0 +1,26 @@
+name: Prokka CI
+
+on: [push, pull_request]  
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      NXF_ANSI_LOG: 0
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Nextflow
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+      - name: Free disk space
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
+      - name:  Run prokka
+        run: |
+          NXF_VER=20.01.0 nextflow run main.nf -c nextflow.config -profile testing --sample_sheet test/sample_sheet.csv --output_folder output-w work/-with-docker ubuntu:latest

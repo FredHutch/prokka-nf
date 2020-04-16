@@ -1,0 +1,4 @@
+work/
+.nextflow*
+trace.txt*
+test/output/
