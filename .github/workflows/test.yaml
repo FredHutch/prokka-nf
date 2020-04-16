@@ -23,4 +23,4 @@ jobs:
           df -h
       - name:  Run prokka
         run: |
-          NXF_VER=20.01.0 nextflow run main.nf -c nextflow.config -profile testing --sample_sheet test/sample_sheet.csv --output_folder output-w work/-with-docker ubuntu:latest
+          NXF_VER=20.01.0 nextflow run main.nf -c nextflow.config -profile testing --sample_sheet test/sample_sheet.csv --output_folder output-w work/ -with-docker ubuntu:latest
