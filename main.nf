@@ -5,7 +5,7 @@ def helpMessage() {
     log.info"""
     Usage:
 
-    netflow run FredHutch/prokka-nf <args>
+    nextflow run FredHutch/prokka-nf <args>
 
     Required Arguments:
         --sample_sheet        # Comma-separated table with `fasta` and `name` columns

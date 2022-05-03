@@ -1,0 +1,13 @@
+{
+    "$schema": "https://raw.githubusercontent.com/FredHutch/bash-workbench/main/docs/schema.json",
+    "name": "Prokka",
+    "description": "Annotate microbial genomes",
+    "args": {
+        "sample_sheet": {
+            "help": "Comma-separated table with `fasta` and `name` columns",
+            "wb_type": "file",
+            "required": true
+        }
+    }
+}
+
