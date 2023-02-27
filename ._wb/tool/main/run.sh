@@ -15,7 +15,6 @@ nextflow \
     "${TOOL_REPO}" \
     --output_folder "${PWD}" \
     -params-file ._wb/tool/params.json \
-    -profile "${PROFILE}" \
     -resume
 
 # If temporary files were not placed in a separate location
