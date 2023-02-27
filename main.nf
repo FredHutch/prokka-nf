@@ -120,7 +120,7 @@ echo Compressing outputs
 
 mv OUTPUT/* ./
 rmdir OUTPUT
-gzip "${sample_name}*"
+gzip "${sample_name}"*
 
 echo Done
 
