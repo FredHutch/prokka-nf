@@ -17,44 +17,16 @@ def helpMessage() {
     """.stripIndent()
 }
 
-// Print the help message
-params.help = false
-if (params.help){
-    helpMessage();
-    exit 0
-}
-
-// Default values for flags
-params.sample_sheet = false
-params.output_folder = false
-
-if (!params.sample_sheet){
-    log.info"""Please specify --sample_sheet."""
-    exit 0
-}
-if (!params.output_folder){
-    log.info"""Please specify --output_folder."""
-    exit 0
-}
-
-// Set up a channel with the fasta and yaml paths
-
-Channel
-    .from(file(params.sample_sheet))
-    .splitCsv(header:true)
-    .map { it -> [it["name"], file(it["fasta"])]}
-    .set { sample_sheet_ch }
-
 process preprocessFASTA {
 
     container "${params.container__biopython}"
     label "io_limited"
     
     input:
-    tuple sample_name, file(fasta) from sample_sheet_ch
+    tuple sample_name, file(fasta)
 
     output:
-    tuple val(sample_name), file("${sample_name}.fasta") into for_prokka, for_gapseq
+    tuple val(sample_name), file("${sample_name}.fasta")
 
     """
 #!/usr/bin/env python3
@@ -126,7 +98,7 @@ process run_prokka {
     maxRetries 2
 
     input:
-    tuple val(sample_name), file(fasta) from for_prokka
+    tuple val(sample_name), file(fasta)
 
     output:
     path "${sample_name}*"
@@ -163,7 +135,7 @@ process run_gapseq {
     maxRetries 2
 
     input:
-    tuple val(sample_name), file(fasta) from for_gapseq
+    tuple val(sample_name), file(fasta)
 
     output:
     path "*"
@@ -180,5 +152,40 @@ gapseq doall "${fasta}"
 echo Done
 
 """
+
+}
+
+
+workflow {
+
+    // Print the help message
+    if (params.help){
+        helpMessage();
+        exit 0
+    }
+
+    if (!params.sample_sheet){
+        log.info"""Please specify --sample_sheet."""
+        exit 0
+    }
+    if (!params.output_folder){
+        log.info"""Please specify --output_folder."""
+        exit 0
+    }
+
+    // Set up a channel with the fasta and yaml paths
+
+    Channel
+        .from(file(params.sample_sheet, checkIfExists: true))
+        .splitCsv(header:true)
+        .map { it -> [it["name"], file(it["fasta"])]}
+        .set { sample_sheet_ch }
+
+    preprocessFASTA(
+        sample_sheet_ch
+    )
+
+    run_prokka(preprocessFASTA.out)
+    run_gapseq(preprocessFASTA.out)
 
 }
