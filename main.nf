@@ -147,6 +147,9 @@ process run_gapseq {
 
 set -euxo pipefail
 
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 echo Running gapseq
 
 gapseq doall "${fasta}"
