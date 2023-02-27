@@ -111,13 +111,15 @@ set -euxo pipefail
 echo Running Prokka
 
 prokka \
-    --outdir "./" \
+    --outdir "OUTPUT/" \
     --prefix "${sample_name}" \
     --cpus ${task.cpus} \
     "${fasta}"
 
 echo Compressing outputs
 
+mv OUTPUT/* ./
+rmdir OUTPUT
 gzip "${sample_name}*"
 
 echo Done
