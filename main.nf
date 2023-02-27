@@ -23,7 +23,7 @@ process preprocessFASTA {
     label "io_limited"
     
     input:
-    tuple sample_name, file(fasta)
+    tuple val(sample_name), file(fasta)
 
     output:
     tuple val(sample_name), file("${sample_name}.fasta")
