@@ -44,7 +44,7 @@ Channel
 
 process preprocessFASTA {
 
-    container "quay.io/fhcrc-microbiome/integrate-metagenomic-assemblies:v0.5"
+    container "${params.container__biopython}"
     label "io_limited"
     
     input:
