@@ -1,5 +1,8 @@
 #!/usr/bin/env nextflow
 
+// Using DSL-2
+nextflow.enable.dsl=2
+
 // Function which prints help message text
 def helpMessage() {
     log.info"""
