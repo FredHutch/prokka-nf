@@ -51,7 +51,7 @@ process preprocessFASTA {
     tuple sample_name, file(fasta) from sample_sheet_ch
 
     output:
-    tuple val(sample_name), file("${sample_name}.fasta") into preprocessed_sample_sheet_ch
+    tuple val(sample_name), file("${sample_name}.fasta") into for_prokka, for_gapseq
 
     """
 #!/usr/bin/env python3
@@ -116,17 +116,17 @@ with open(
 
 process run_prokka {
 
-    container "quay.io/biocontainers/prokka:1.14.6--pl526_0"
+    container "${params.container__prokka}"
     label "io_limited"
-    publishDir "${params.output_folder}/${sample_name}/"
+    publishDir "${params.output_folder}/${sample_name}/prokka/", mode: 'copy', overwrite: true
     errorStrategy 'retry'
     maxRetries 2
 
     input:
-    tuple val(sample_name), file(fasta) from preprocessed_sample_sheet_ch
+    tuple val(sample_name), file(fasta) from for_prokka
 
     output:
-    path "${sample_name}/"
+    path "${sample_name}*"
 
 """
 #!/bin/bash
@@ -136,14 +136,43 @@ set -euxo pipefail
 echo Running Prokka
 
 prokka \
-    --outdir "${sample_name}" \
+    --outdir "./" \
     --prefix "${sample_name}" \
     --cpus ${task.cpus} \
     "${fasta}"
 
 echo Compressing outputs
 
-gzip "${sample_name}"/*
+gzip "${sample_name}*"
+
+echo Done
+
+"""
+
+}
+
+process run_gapseq {
+
+    container "${params.container__gapseq}"
+    label "io_limited"
+    publishDir "${params.output_folder}/${sample_name}/gapseq/", mode: 'copy', overwrite: true
+    errorStrategy 'retry'
+    maxRetries 2
+
+    input:
+    tuple val(sample_name), file(fasta) from for_gapseq
+
+    output:
+    path "*"
+
+"""
+#!/bin/bash
+
+set -euxo pipefail
+
+echo Running gapseq
+
+gapseq doall "${fasta}"
 
 echo Done
 
