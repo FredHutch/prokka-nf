@@ -160,6 +160,26 @@ echo Done
 
 }
 
+process collect_gapseq {
+
+    container "${params.container__widgets}"
+    label "io_limited"
+    publishDir "${params.output_folder}", mode: 'copy', overwrite: true
+    errorStrategy 'retry'
+    maxRetries 2
+
+    input:
+    path "*"
+
+    output:
+    path "*.html"
+
+"""
+gapseq-widget.py
+"""
+
+}
+
 
 workflow {
 
@@ -192,5 +212,9 @@ workflow {
 
     run_prokka(preprocessFASTA.out)
     run_gapseq(preprocessFASTA.out)
+
+    collect_gapseq(
+        run_gapseq.out.flatten().toSortedList()
+    )
 
 }
