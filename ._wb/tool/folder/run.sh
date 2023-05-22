@@ -10,7 +10,7 @@ echo
 # Build the samplesheet
 echo "Building the samplesheet"
 echo fasta,name > sample_sheet.csv
-for fp in ${FOLDER}/*${SUFFIX}; do
+for fp in ${FOLDER%/}/*${SUFFIX}; do
     n="${fp##*/}"
     n="${n%$SUFFIX}"
     echo "$fp,$n" >> sample_sheet.csv
