@@ -1,0 +1,20 @@
+{
+    "$schema": "https://raw.githubusercontent.com/FredHutch/bash-workbench/main/docs/schema.json",
+    "name": "Prokka - Folder",
+    "description": "Annotate all microbial genomes contained in a particular folder",
+    "args": {
+        "folder": {
+            "help": "Folder containing FASTA files to analyze",
+            "wb_type": "folder",
+            "required": true,
+            "wb_env": "FOLDER"
+        },
+        "suffix": {
+            "help": "File ending for all files to analyze",
+            "wb_type": "string",
+            "default": ".fasta",
+            "wb_env": "SUFFIX"
+        }
+    }
+}
+
