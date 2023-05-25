@@ -211,10 +211,13 @@ workflow {
     )
 
     run_prokka(preprocessFASTA.out)
-    run_gapseq(preprocessFASTA.out)
 
-    collect_gapseq(
-        run_gapseq.out.flatten().toSortedList()
-    )
+    if (params.run_gapseq){
+        run_gapseq(preprocessFASTA.out)
+
+        collect_gapseq(
+            run_gapseq.out.flatten().toSortedList()
+        )
+    }
 
 }
