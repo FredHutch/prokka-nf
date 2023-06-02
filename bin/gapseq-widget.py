@@ -10,7 +10,7 @@ import widgets.streamlit as wist
 class GapseqWidget(wist.StreamlitWidget):
 
     title = 'Microbial Genome Metabolism Explorer'
-    
+
     disable_sidebar = True
 
     extra_imports = [
