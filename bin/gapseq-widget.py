@@ -21,6 +21,8 @@ class GapseqWidget(wist.StreamlitWidget):
 
     requirements = ["scipy", "plotly"]
 
+    pyodide_requirements = ["scipy"]
+
     children = [
         wist.StExpander(
             id='options',
